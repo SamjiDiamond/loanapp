@@ -19,7 +19,12 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::group(['namespace' => 'Api'], function () {
 
-    Route::post('signup', 'AuthenticateController@signup')->name('signup');
+    Route::post('signupprofile', 'AuthenticateController@signupprofile')->name('signupprofile');
+    Route::post('signupnextkin', 'AuthenticateController@signupnextkin')->name('signupnextkin');
+    Route::post('signupemployment', 'AuthenticateController@signupemployment')->name('signupemployment');
+    Route::post('signupbank', 'AuthenticateController@signupbank')->name('signupbank');
+    Route::post('signup1', 'AuthenticateController@signup1')->name('signup1');
+    Route::post('image', 'AuthenticateController@image')->name('image');
     Route::post('login', 'AuthenticateController@login')->name('login');
     // Route::post('login_face', 'AuthenticateController@login_face')->name('login_face');
 //    Route::get('logout', 'AuthenticateController@logout')->name('logout');
