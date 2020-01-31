@@ -192,7 +192,7 @@ public function signupbank(Request $request)
         if ($validator->passes())
         {
             if(Auth::attempt(['phoneno' => request('phoneno'), 'password' => request('password')])){
-                $user = Auth::user();
+                $phoneno = Auth::user();
                 $token = Str::random(60);
 
                 $request->user()->forceFill([
@@ -203,7 +203,7 @@ public function signupbank(Request $request)
                     return response()->json(['status'=> 0, 'message'=>'phoneno'.auth()->user()->status.', kindly contact support']);
                 }
 
-                return response()->json(['status'=> 1, 'message' => "User authenticated successfully", 'token' => $token, 'phoneno'=>auth()->user()->phoneno, 'user_id'=>auth()->user()->first_name]);
+                return response()->json(['status'=> 1, 'message' => "User authenticated successfully", 'token' => $token, 'phoneno'=>auth()->user()->phoneno]);
             }
             else{
                 return response()->json(['status'=> 0, 'message'=>'Incorrect Login Details', 'error'=>'']);
