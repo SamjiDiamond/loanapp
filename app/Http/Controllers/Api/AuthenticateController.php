@@ -39,14 +39,14 @@ class AuthenticateController extends Controller
 
         if ($validator->passes())
         {
-            
+
             try
             {
                 DB::beginTransaction();
 
                 $input['first_name'] = ucfirst($input['first_name']);
 				$user=User::where(['phoneno'=> $input['phoneno']])->update($input);
-				
+
                 DB::commit();
                 return response()->json(['status'=> 1, 'message' => "Details submitted successfully"]);
             }catch(\Exception $e){
@@ -79,14 +79,14 @@ class AuthenticateController extends Controller
 
         if ($validator->passes())
         {
-            
+
             try
             {
                 DB::beginTransaction();
 
                 $input['next_name'] = ucfirst($input['next_name']);
 				$user=User::where(['phoneno'=> $input['phoneno']])->update($input);
-				
+
                 DB::commit();
                 return response()->json(['status'=> 1, 'message' => "Details submitted successfully"]);
             }catch(\Exception $e){
@@ -120,14 +120,14 @@ public function signupemployment(Request $request)
 
         if ($validator->passes())
         {
-            
+
             try
             {
                 DB::beginTransaction();
 
                 $input['employer_name'] = ucfirst($input['employer_name']);
 				$user=User::where(['phoneno'=> $input['phoneno']])->update($input);
-				
+
                 DB::commit();
                 return response()->json(['status'=> 1, 'message' => "Details submitted successfully"]);
             }catch(\Exception $e){
@@ -161,12 +161,12 @@ public function signupbank(Request $request)
             {
                 $token = Str::random(60);
                 DB::beginTransaction();
- 				
+
                 $input['bank_name'] = ucfirst($input['bank_name']);
 				$user=User::where(['phoneno'=> $input['phoneno']])->update($input);
-				
+
                 DB::commit();
-				
+
                 return response()->json(['status'=> 1, 'message' => "Details submitted successfully"]);
             }catch(\Exception $e){
                 DB::rollback();
@@ -258,7 +258,7 @@ public function signupbank(Request $request)
                     $input['first_name'] = ucfirst($input['first_name']);
                     $input['last_name'] = ucfirst($input['last_name']);
                     $user=User::where(['user_id'=> auth()->user()->user_id])->update($input);
-					
+
                     DB::commit();
                     return response()->json(['status'=> 1, 'message' => "Profile updated successfully"]);
                 }catch(\Exception $e){
@@ -273,7 +273,7 @@ public function signupbank(Request $request)
 
         }
     }
-	
+
 	 public function signup1(Request $request)
     {
         $input = $request->all();
@@ -317,7 +317,8 @@ public function signupbank(Request $request)
     {
         $input = $request->all();
         $rules = array(
-            'img' => 'required');
+            'img' => 'required',
+            'phoneno' => 'required');
 
         $messages = array(
             'min' => 'Hmm, that looks short.',
@@ -329,32 +330,32 @@ public function signupbank(Request $request)
 
         if ($validator->passes())
         {
-            
+
             try
             {
-                DB::beginTransaction();
-                
+//                DB::beginTransaction();
+
                 $file_data= $request->input('img');
                 //generating unique file name;
-                $file_name = $genId.'.jpg';
+                $file_name = $input["phoneno"].'.jpg';
                 @list($type, $file_data) = explode(';', $file_data);
                 @list(, $file_data)= explode(',', $file_data);
                 if($file_data!=""){
                     // storing image in storage/app/public Folder
                     \Storage::disk('public')->put($file_name,base64_decode($file_data));
-                    // \File::put(storage_path(). '/' . $file_name, base64_decode($file_data));
+//                     \File::put(storage_path(). '/' . $file_name, base64_decode($file_data));
 
-                    //Storage::put('/' . $file_name, $file_data, 'public');
+//                    Storage::put('/' . $file_name, $file_data, 'public');
                 }
-                DB::commit();
-                return response()->json(['status'=> 1, 'message' => "Account created successfully"]);
+//                DB::commit();
+                return response()->json(['status'=> 1, 'message' => "Picture uploaded successfully"]);
             }catch(\Exception $e){
-                DB::rollback();
+//                DB::rollback();
                 //dd($e);
                 return response()->json(['status'=> 0, 'message'=>'Error creating account','error' => $e]);
             }
         }else{
-            DB::rollback();
+//            DB::rollback();
             return response()->json(['status'=> 0, 'message'=>'Error creating account', 'error' => $validator->errors()]);
         }
 
